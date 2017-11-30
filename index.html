@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Link to JQuery library (used for modal) -->  
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <!-- Link to Mapbox GL JS library -->
+  <script src='https://api.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.js'></script>
+  <!-- Link to Mapbox GL JS css styleshcss/indiaeet -->
+  <link href='https://api.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css' rel='stylesheet'/>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+  <link rel="stylesheet" href="./styles.css">
+  <script src="index.js"></script>
+
+
+</head>
+<body> 
+  <div class="top">
+    <img src="title00.svg" 
+    style="width: 100%">
+  </div>
+  <!-- slideshow -->
+  <div class="slideshow-container">
+    <div id="slide01" class="mySlides fade"></div>
+    <div id="slide02" class="mySlides fade"></div>
+    <div id="slide03" class="mySlides fade"></div>
+    <div id="slide04" class="mySlides fade"></div>
+    <div id="slide05" class="mySlides fade">
+      <iframe width="800" height="450" style="position:relative; left: 212px; top: 50px" src="https://www.youtube.com/embed/tAbGA338DSA" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+  </div>
+  <br>
+
+  <div style="text-align:center">
+    <span class="dot" onclick="currentSlide(1)"></span> 
+    <span class="dot" onclick="currentSlide(2)"></span> 
+    <span class="dot" onclick="currentSlide(3)"></span> 
+    <span class="dot" onclick="currentSlide(4)"></span>
+    <span class="dot" onclick="currentSlide(5)"></span>  
+  </div>
+
+  <script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      var dots = document.getElementsByClassName("dot");
+      if (n > slides.length) {slideIndex = 1}    
+        if (n < 1) {slideIndex = slides.length}
+          for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";  
+          }
+          for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+          }
+          slides[slideIndex-1].style.display = "block";  
+          dots[slideIndex-1].className += " active";
+        }
+
+        var slides =["slide01", "slide02", "slide03", "slide04"];
+        var svgs =["landfill01-01.svg", "plan02-01.svg", "section03-01.svg", "pollution04-01.svg"];
+
+        $.each(slides, function(i) {
+
+          var thisSlide = slides[i];
+          var thisSVG = svgs[i];
+          var thisFunction = "init" + i;
+          $.get(thisSVG, function(data) {
+
+            var slideData = data.documentElement;
+            console.log(slideData);
+            $(slideData).attr({
+              id: thisSlide,
+              viewBox: "0 0 1224 581",
+              preserveAspectRatio: "xMidYMin slice"
+            });
+            $("#" + thisSlide).append(slideData);
+            console.log(i);
+            init(i);
+          });
+
+
+        });        
+      </script>
+    </body>
+    </html>
